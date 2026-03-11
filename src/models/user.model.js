@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const createError = require("../utils/createError.js");
 
 const userSchema = new mongoose.Schema({
     firstName: {
@@ -25,7 +26,7 @@ const userSchema = new mongoose.Schema({
         immutable: true,
         validate(value){
             if(!validator.isEmail(value)){
-                throw new Error("Please enter valid email...");
+                throw createError(400, "Invalid Email");
             }
         }
     },
@@ -34,23 +35,22 @@ const userSchema = new mongoose.Schema({
         required: true,
         validate(value){
             if(!validator.isStrongPassword(value)){
-                throw new Error("Weak Password Try Again...");
+                throw createError(400, "Password must include 1 capital case, 1 small case, 1 special character, 1 number and minimum length of 8");
             }
         }
     },
     age: {
         type: Number,
-        max: 60,
+        max: 70,
         min: 16
     },
     gender: {
         type: String,
         lowercase: true,
         trim: true,
-        validate(value) {
-            if(!["male", "female", "others"].includes(value)){
-                throw new Error("Gender not defined...");
-            }
+        enum: {
+            values: ["male", "female", "others"],
+            message: `{VALUE} is not a valid gender`
         }
     },
     about: {
@@ -65,7 +65,7 @@ const userSchema = new mongoose.Schema({
         trim: true,
         validate(value){
             if(value.length > 20){
-                throw new Error("Number of skills exceedes limit of 20");
+                throw createError(400, "Number of skills exceedes limit of 20");
             }
         }
     },
@@ -74,12 +74,18 @@ const userSchema = new mongoose.Schema({
         default: "https://www.vhv.rs/viewpic/ioJThwo_men-profile-icon-png-image-free-download-searchpng/",
         validate(value){
             if(!validator.isURL(value)){
-                throw new Error("Enter valid url");
+                throw createError(400, "Enter valid url");
             }
         }
     }
 }, {
     timestamps: true,
+});
+
+userSchema.pre("save", async function(){
+    if(this.isModified("password")){
+        this.password = await bcrypt.hash(this.password, 10);
+    }
 });
 
 userSchema.methods.getJWT = async function () {

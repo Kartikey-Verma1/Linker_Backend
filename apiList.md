@@ -1,13 +1,13 @@
 ## auth
-- post - authProfile/login
-- post - authProfile/logout
-- post - authProfile/signup
+- post - authProfile/login ✅
+- post - authProfile/logout ✅
+- post - authProfile/signup ✅
 
 ## profile
-- patch - profile/change
-- patch - profile/changepassword
-- delete - profile/delete
-- get - profile/user
+- patch - profile/edit ✅
+- patch - profile/changePassword ✅
+- delete - profile/delete ✅
+- get - profile/view ✅
 
 ## connectionRequest
 - post - connectionRequest/send/ingnore/:userId
