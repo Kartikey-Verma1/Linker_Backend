@@ -16,6 +16,11 @@ const userAuth = async (req, res, next)=>{
         req.user = user;
         next();
     } catch(err){
+        if(err.name === "TokenExpiredError"){
+            res.status(401).json({
+                message: err.message,
+            })
+        }
         res.status(err.statusCode || 500).json({
             message: err.message,
             data: err.data

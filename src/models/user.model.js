@@ -14,9 +14,13 @@ const userSchema = new mongoose.Schema({
     },
     lastName: {
         type: String,
-        minLength: 4,
         maxLength: 15,
         trim: true,
+        validator(value){
+            if(value.length != 0 && value.length < 4){
+                throw createError(409, "Length of lastname can be between 4 to 15.")
+            }
+        }
     },
     email: {
         type: String,
@@ -42,7 +46,8 @@ const userSchema = new mongoose.Schema({
     age: {
         type: Number,
         max: 70,
-        min: 16
+        min: 16,
+        required: true
     },
     gender: {
         type: String,
@@ -57,7 +62,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "Hey there! I am on DevTinder.",
         trim: true,
-        maxLength: 100,
+        maxLength: 200,
     },
     skills: {
         type: [String],
@@ -99,8 +104,6 @@ userSchema.methods.getJWT = async function () {
 };
 
 userSchema.methods.verifyPassword = async function (password) {
-    console.log(password);
-    console.log(this.password);
     const isValid = await bcrypt.compare(password, this.password);
     return isValid;
 };

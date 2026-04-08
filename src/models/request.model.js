@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const createError = require("../utils/createError");
-const User = require("./user.model");
 
 const requestSchema = new mongoose.Schema({
     senderId: {
@@ -17,7 +16,7 @@ const requestSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: {
-            values: ["ignored", "interested", "accepted", "rejected"],
+            values: ["ignored", "interested", "accepted", "rejected", "withdrawn"],
             message: `{VALUE} is incorrect status type`
         }
     }
@@ -25,7 +24,7 @@ const requestSchema = new mongoose.Schema({
     timestamps: true
 });
 
-requestSchema.index({senderId: 1, receiverId: 1});
+requestSchema.index({senderId: 1, receiverId: 1}, {unique: true});
 
 requestSchema.pre("save", function() {
     const request = this;

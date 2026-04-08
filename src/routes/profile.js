@@ -13,6 +13,7 @@ profileRouter.get("/profile/view", userAuth, async (req, res)=>{
         res.json({
             message: "user profile information",
             data: {
+                _id: user._id,
                 firstName: user.firstName,
                 lastName: user.lastName,
                 age: user.age,
@@ -41,6 +42,7 @@ profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
         res.json({
             message: `${user.firstName} your profile has been updated successfully!`,
             data: {
+                _id: user._id,
                 firstName: user.firstName,
                 lastName: user.lastName,
                 age: user.age,

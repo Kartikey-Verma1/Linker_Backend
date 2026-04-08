@@ -11,6 +11,10 @@ authRouter.post("/authProfile/signup", async (req, res)=>{
     try{
         validateInputData(req);
         const {firstName, lastName, email, password, age, gender, about, skills, photourl} = req.body;
+        const sameUser = await User.findOne({email});
+        if(sameUser){
+            throw createError(409, "User Already Exist!");
+        }
         const user = new User({
             firstName,
             lastName,
@@ -24,8 +28,7 @@ authRouter.post("/authProfile/signup", async (req, res)=>{
         });
         await user.save();
         res.json({
-            message: "user added successfully!",
-            data: {firstName, lastName, age, gender, about, skills, photourl}
+            message: `${firstName} ${lastName} added successfully!`
         });
     } catch (err){
         res.status(err.statusCode || 500).json({
@@ -57,6 +60,7 @@ authRouter.post("/authProfile/login", async (req, res)=>{
         .json({
             message: `${user.firstName} ${user.lastName} Logged In!`,
             data: {
+                _id: user._id,
                 firstName: user.firstName,
                 lastName: user.lastName,
                 age: user.age,
