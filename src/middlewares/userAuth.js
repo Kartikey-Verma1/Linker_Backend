@@ -8,7 +8,7 @@ const userAuth = async (req, res, next)=>{
         if(!token){
             throw createError(401, "Token not found");
         }
-        const decoded = jwt.verify(token, "DevTinder@123#");
+        const decoded = jwt.verify(token, "Linker@123#");
         const user = await User.findById(decoded._id)
         if(!user){
             throw createError(401, "Please login first");

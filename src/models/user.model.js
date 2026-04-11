@@ -60,7 +60,7 @@ const userSchema = new mongoose.Schema({
     },
     about: {
         type: String,
-        default: "Hey there! I am on DevTinder.",
+        default: "Hey there! I am on Linker.",
         trim: true,
         maxLength: 200,
     },
@@ -97,7 +97,7 @@ userSchema.pre("save", async function(){
 });
 
 userSchema.methods.getJWT = async function () {
-    const token = await jwt.sign({_id: this._id}, "DevTinder@123#", {
+    const token = await jwt.sign({_id: this._id}, "Linker@123#", {
         expiresIn: "1d"
     });
     return token;
