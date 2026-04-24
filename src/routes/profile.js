@@ -103,7 +103,6 @@ profileRouter.delete("/profile/deleteAccount", userAuth, async (req, res) => {
         res
         .cookie("token", null, {
             expires: new Date(Date.now()),
-            sameSite: "none"
         })
         .json({
             message: `${user.firstName} your profile has been deleted!`

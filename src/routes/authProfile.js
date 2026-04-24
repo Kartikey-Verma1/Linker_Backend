@@ -56,9 +56,7 @@ authRouter.post("/authProfile/login", async (req, res)=>{
 
         const token = await user.getJWT();
         res
-        .cookie("token", token, {
-            sameSite: "none"
-        })
+        .cookie("token", token)
         .json({
             message: `${user.firstName} ${user.lastName} Logged In!`,
             data: {
@@ -84,7 +82,6 @@ authRouter.post("/authProfile/logout", async(req, res) => {
     res
     .cookie("token", null, {
         expires: new Date(Date.now()),
-        sameSite: "none"
     })
     .json({
         message: "user logged out",
