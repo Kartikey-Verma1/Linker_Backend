@@ -9,6 +9,8 @@ const cors = require("cors");
 
 const app = express();
 
+require('dotenv').config();
+
 app.use(cors({
     origin: "http://localhost:5173",
     credentials: true
@@ -31,8 +33,8 @@ app.use("/", (err, req, res, next)=>{
 connectDB()
 .then(()=>{
     console.log("Database is connected successfully...");
-    app.listen(3000, ()=>{
-        console.log("server is running on port 3000");
+    app.listen(process.env.PORT, ()=>{
+        console.log(`server is running on port ${process.env.PORT}`);
     });
 
 })

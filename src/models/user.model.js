@@ -97,7 +97,7 @@ userSchema.pre("save", async function(){
 });
 
 userSchema.methods.getJWT = async function () {
-    const token = await jwt.sign({_id: this._id}, "Linker@123#", {
+    const token = await jwt.sign({_id: this._id}, process.env.JWT_SECRET, {
         expiresIn: "1d"
     });
     return token;
