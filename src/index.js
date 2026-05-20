@@ -33,7 +33,7 @@ app.use("/", (err, req, res, next)=>{
 connectDB()
 .then(()=>{
     console.log("Database is connected successfully...");
-    app.listen(process.env.PORT, ()=>{
+    app.listen(process.env.PORT,"127.0.0.1", ()=>{
         console.log(`server is running on port ${process.env.PORT}`);
     });
 
